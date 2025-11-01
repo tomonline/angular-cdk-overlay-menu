@@ -12,11 +12,23 @@ export class ContextMenuService {
   private overlay = inject(Overlay);
   private overlayRef?: OverlayRef;
 
-  private positions: ConnectedPosition[] = [
-    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 0},
-    { originX: 'end',   originY: 'bottom', overlayX: 'end',   overlayY: 'top', offsetY: 0},
-    { originX: 'start', originY: 'top',    overlayX: 'start', overlayY: 'bottom', offsetY: -0},
-    { originX: 'end',   originY: 'top',    overlayX: 'end',   overlayY: 'bottom', offsetY: -0},
+  // Preferred positions when anchored to an element (e.g., button)
+  private elementPositions: ConnectedPosition[] = [
+    // Preferred: align menu's top-right corner with the button's right edge, below the button
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 1 },
+    // Fallbacks when space is constrained
+    { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -1 },
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 1 },
+    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -1 },
+  ];
+
+  // Preferred positions when anchored to a point (e.g., right-click)
+  // First choice anchors the popup's top-right corner at the click point.
+  private pointPositions: ConnectedPosition[] = [
+    { originX: 'start', originY: 'top', overlayX: 'end',   overlayY: 'top' },
+    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top' },
+    { originX: 'start', originY: 'top', overlayX: 'end',   overlayY: 'bottom' },
+    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom' },
   ];
 
   openFrom(origin: Origin, items: MenuItem[]) {
@@ -61,12 +73,17 @@ export class ContextMenuService {
   }
 
   private createPositionStrategy(origin: Origin): FlexibleConnectedPositionStrategy {
+    const positions = this.isPoint(origin) ? this.pointPositions : this.elementPositions;
     return this.overlay.position()
       .flexibleConnectedTo(origin as any)
-      .withPositions(this.positions)
+      .withPositions(positions)
       .withFlexibleDimensions(true)
       .withGrowAfterOpen(true)
       .withViewportMargin(8)
       .withPush(true);
+  }
+
+  private isPoint(origin: Origin): origin is { x: number; y: number } {
+    return !!origin && typeof (origin as any).x === 'number' && typeof (origin as any).y === 'number';
   }
 }

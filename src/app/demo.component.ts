@@ -6,7 +6,7 @@ import { ContextMenuService } from './services/context-menu.service';
   selector: 'app-demo',
   standalone: true,
   template: `
-      <div style="padding: 24px">
+      <div style="padding: 24px; display: flex; justify-content: right;">
       <button #menuBtn type="button" (click)="openMenu(menuBtn)">Open menu under me</button>
     </div>
 
