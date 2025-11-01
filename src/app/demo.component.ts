@@ -29,8 +29,15 @@ export class DemoComponent {
     ];
   }
 
+  private buttonItems(): MenuItem[] {
+    return [
+      { label: 'Refresh', icon: 'refresh', action: () => console.log('Refresh') },
+      { label: 'Settings', icon: 'settings', action: () => console.log('Settings') },
+    ];
+  }
+
   openMenu(buttonEl: HTMLElement) {
-    this.contextMenu.openUnder(buttonEl, this.buildItems());
+    this.contextMenu.openUnder(buttonEl, this.buttonItems());
   }
 
   onContextMenu(event: MouseEvent) {
