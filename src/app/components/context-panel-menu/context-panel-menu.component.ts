@@ -7,7 +7,7 @@ import { MenuItem } from '../../context-menu-item.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './context-panel-menu.component.html',
-  styleUrl: './context-panel-menu.component.css'
+  styleUrls: ['./context-panel-menu.component.css']
 })
 export class ContextPanelMenuComponent {
 

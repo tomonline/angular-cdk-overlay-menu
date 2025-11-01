@@ -1,1 +1,3 @@
+@import '@angular/cdk/overlay-prebuilt.css';
+
 body { font-family: sans-serif; margin: 2rem; background: #f7f7f7; }
