@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuItem } from './context-menu-item.model';
 import { ContextMenuService } from './services/context-menu.service';
+import { MyActionsService } from './services/sample.service';
 
 @Component({
   selector: 'app-demo',
@@ -18,11 +19,13 @@ import { ContextMenuService } from './services/context-menu.service';
     </div>`
 })
 export class DemoComponent {
-    constructor(private contextMenu: ContextMenuService) {}
+    constructor(private contextMenu: ContextMenuService,
+      private sampleService: MyActionsService
+    ) {}
 
   private buildItems(): MenuItem[] {
     return [
-      { label: 'Edit', icon: 'edit', action: () => console.log('Edit') },
+      { label: 'Edit', icon: 'edit', action: () => this.sampleService.edit('1') },
       { label: 'Duplicate', icon: 'content_copy', action: () => console.log('Duplicate') },
       { divider: true, label: '' },
       { label: 'Delete', icon: 'delete', action: () => console.log('Delete') },
